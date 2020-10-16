@@ -192,46 +192,58 @@ const std::vector<MetricFactory>& PluginRootContext::defaultMetrics() {
       // HTTP, HTTP/2, and GRPC metrics
       MetricFactory{
           "requests_total", MetricType::Counter,
-
           [](const ::Wasm::Common::RequestInfo&) -> uint64_t { return 1; },
-          false},
+          false, count_standard_labels},
       MetricFactory{
           "request_duration_milliseconds", MetricType::Histogram,
           [](const ::Wasm::Common::RequestInfo& request_info) -> uint64_t {
             return request_info.duration /* in nanoseconds */ / 1000000;
           },
-          false},
+          false, count_standard_labels},
       MetricFactory{"request_bytes", MetricType::Histogram,
-
                     [](const ::Wasm::Common::RequestInfo& request_info)
                         -> uint64_t { return request_info.request_size; },
-                    false},
+                    false, count_standard_labels},
       MetricFactory{"response_bytes", MetricType::Histogram,
-
                     [](const ::Wasm::Common::RequestInfo& request_info)
                         -> uint64_t { return request_info.response_size; },
-                    false},
+                    false, count_standard_labels},
+      // GRPC streaming metrics.
+      // These metrics are dimensioned by peer labels as a minimum.
+      // TODO: consider adding connection security policy
+      MetricFactory{
+          "request_messages_total", MetricType::Counter,
+          [](const ::Wasm::Common::RequestInfo& request_info) -> uint64_t {
+            return request_info.request_message_count;
+          },
+          false, count_peer_labels},
+      MetricFactory{
+          "response_messages_total", MetricType::Counter,
+          [](const ::Wasm::Common::RequestInfo& request_info) -> uint64_t {
+            return request_info.response_message_count;
+          },
+          false, count_peer_labels},
       // TCP metrics.
       MetricFactory{"tcp_sent_bytes_total", MetricType::Counter,
                     [](const ::Wasm::Common::RequestInfo& request_info)
                         -> uint64_t { return request_info.tcp_sent_bytes; },
-                    true},
+                    true, count_standard_labels},
       MetricFactory{"tcp_received_bytes_total", MetricType::Counter,
                     [](const ::Wasm::Common::RequestInfo& request_info)
                         -> uint64_t { return request_info.tcp_received_bytes; },
-                    true},
+                    true, count_standard_labels},
       MetricFactory{
           "tcp_connections_opened_total", MetricType::Counter,
           [](const ::Wasm::Common::RequestInfo& request_info) -> uint64_t {
             return request_info.tcp_connections_opened;
           },
-          true},
+          true, count_standard_labels},
       MetricFactory{
           "tcp_connections_closed_total", MetricType::Counter,
           [](const ::Wasm::Common::RequestInfo& request_info) -> uint64_t {
             return request_info.tcp_connections_closed;
           },
-          true},
+          true, count_standard_labels},
   };
   return default_metrics;
 }
@@ -252,8 +264,9 @@ bool PluginRootContext::initializeDimensions(const json& j) {
   const std::vector<MetricTag>& default_tags = defaultTags();
   for (const auto& factory : defaultMetrics()) {
     factories[factory.name] = factory;
-    metric_tags[factory.name] = default_tags;
-    for (size_t i = 0; i < count_standard_labels; i++) {
+    metric_tags[factory.name] = std::vector<MetricTag>(
+        default_tags.begin(), default_tags.begin() + factory.count_labels);
+    for (size_t i = 0; i < factory.count_labels; i++) {
       metric_indexes[factory.name][default_tags[i].name] = i;
     }
   }
@@ -537,51 +550,29 @@ void PluginRootContext::onTick() {
 
 bool PluginRootContext::report(::Wasm::Common::RequestInfo& request_info,
                                bool is_tcp) {
-  std::string peer_id;
-  bool peer_found = getValue({peer_metadata_id_key_}, &peer_id);
-
-  std::string peer;
-  const ::Wasm::Common::FlatNode* peer_node =
-      peer_found && getValue({peer_metadata_key_}, &peer)
-          ? flatbuffers::GetRoot<::Wasm::Common::FlatNode>(peer.data())
-          : nullptr;
-
-  // map and overwrite previous mapping.
-  const ::Wasm::Common::FlatNode* destination_node_info =
-      outbound_ ? peer_node
-                : flatbuffers::GetRoot<::Wasm::Common::FlatNode>(
-                      local_node_info_.data());
-  std::string destination_namespace =
-      destination_node_info && destination_node_info->namespace_()
-          ? destination_node_info->namespace_()->str()
-          : "";
+  Wasm::Common::PeerNodeInfo peer_node_info(peer_metadata_id_key_,
+                                            peer_metadata_key_);
 
   if (is_tcp) {
     // For TCP, if peer metadata is not available, peer id is set as not found.
-    // Otherwise, we wait for metadata exchange to happen before we report  any
+    // Otherwise, we wait for metadata exchange to happen before we report any
     // metric.
     // We keep waiting if response flags is zero, as that implies, there has
     // been no error in connection.
     uint64_t response_flags = 0;
     getValue({"response", "flags"}, &response_flags);
-    if (!peer_found && response_flags == 0) {
+    if (!peer_node_info.found() && response_flags == 0) {
       return false;
     }
     if (!request_info.is_populated) {
-      ::Wasm::Common::populateTCPRequestInfo(outbound_, &request_info,
-                                             destination_namespace);
+      ::Wasm::Common::populateTCPRequestInfo(outbound_, &request_info);
     }
   } else {
     ::Wasm::Common::populateHTTPRequestInfo(outbound_, useHostHeaderFallback(),
-                                            &request_info,
-                                            destination_namespace);
+                                            &request_info);
   }
 
-  map(istio_dimensions_, outbound_,
-      peer_node ? *peer_node
-                : *flatbuffers::GetRoot<::Wasm::Common::FlatNode>(
-                      empty_node_info_.data()),
-      request_info);
+  map(istio_dimensions_, outbound_, peer_node_info.get(), request_info);
   for (size_t i = 0; i < expressions_.size(); i++) {
     if (!evaluateExpression(expressions_[i].token,
                             &istio_dimensions_.at(count_standard_labels + i))) {
