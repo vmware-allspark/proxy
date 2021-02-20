@@ -44,6 +44,7 @@ URL="https://github.com/${ENVOY_ORG}/${ENVOY_REPO}/archive/${LATEST_SHA}.tar.gz"
 GETSHA=$(wget "${URL}" && sha256sum "${LATEST_SHA}".tar.gz | awk '{ print $1 }')
 SHAArr=("${GETSHA}")
 SHA256=${SHAArr[0]}
+rm "${LATEST_SHA}".tar.gz
 
 # Update ENVOY_SHA commit date
 sed -i "s/Commit date: .*/Commit date: ${DATE}/" "${WORKSPACE}"
@@ -51,3 +52,7 @@ sed -i "s/Commit date: .*/Commit date: ${DATE}/" "${WORKSPACE}"
 # Update the dependency in istio/proxy WORKSPACE
 sed -i 's/ENVOY_SHA = .*/ENVOY_SHA = "'"$LATEST_SHA"'"/' "${WORKSPACE}"
 sed -i 's/ENVOY_SHA256 = .*/ENVOY_SHA256 = "'"$SHA256"'"/' "${WORKSPACE}"
+
+# Update .bazelversion and envoy.bazelrc
+curl -sSL "https://raw.githubusercontent.com/${ENVOY_ORG}/${ENVOY_REPO}/${LATEST_SHA}/.bazelversion" > .bazelversion
+curl -sSL "https://raw.githubusercontent.com/${ENVOY_ORG}/${ENVOY_REPO}/${LATEST_SHA}/.bazelrc" > envoy.bazelrc
