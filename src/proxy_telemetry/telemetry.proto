@@ -1,0 +1,25 @@
+syntax = "proto3";
+package Mesh7.ProxyTelemetry;
+
+import "envoy/config/core/v3/base.proto";
+import "envoy/data/accesslog/v3/accesslog.proto";
+
+/// A service for reporting HTTP telmetry
+service HttpTelemetry {
+  rpc StreamHttpTelemetry(stream StreamHttpTelemetryMessage) returns (StreamHttpTelemetryResponse) {}
+}
+
+message Identifier {
+  // The node sending the access log messages over the stream.
+  envoy.config.core.v3.Node node = 1;
+}
+
+message StreamHttpTelemetryMessage {
+  Identifier identifier = 1;
+  repeated envoy.data.accesslog.v3.HTTPAccessLogEntry entries = 2;
+}
+
+// Empty response for the StreamTelemetry API
+message StreamHttpTelemetryResponse {
+
+}
