@@ -7,7 +7,7 @@
 
 #include <google/protobuf/util/time_util.h>
 
-namespace Mesh7::Filters::Tcp::Telemetry {
+namespace Tsm::Filters::Tcp::Telemetry {
 
 namespace {
 constexpr absl::string_view ConnectionEventToString(ConnectionEvent event) {
@@ -90,4 +90,4 @@ NetworkFilter::~NetworkFilter() {
   }
 }
 
-} // namespace Mesh7::Filters::Tcp::Telemetry
+} // namespace Tsm::Filters::Tcp::Telemetry
