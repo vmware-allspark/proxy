@@ -5,10 +5,10 @@
 #include "envoy/local_info/local_info.h"
 #include "envoy/grpc/async_client_manager.h"
 
-namespace Mesh7::ProxyTelemetry {
+namespace Tsm::ProxyTelemetry {
 
 /// A semi-generic Telemetry streamer class
-/// RequestProto is assumed to contain a field `Mesh7::Proxy::Identifier identifier`
+/// RequestProto is assumed to contain a field `Tsm::Proxy::Identifier identifier`
 template <class RequestProto, class ResponseProto>
 class TelemetryStreamer : public Envoy::Grpc::AsyncStreamCallbacks<ResponseProto>,
                           public Envoy::Logger::Loggable<Envoy::Logger::Id::filter> {
@@ -61,4 +61,4 @@ void TelemetryStreamer<RequestProto, ResponseProto>::send(RequestProto&& message
   stream_->sendMessage(message, false);
 }
 
-} // namespace Mesh7::ProxyTelemetry
+} // namespace Tsm::ProxyTelemetry
