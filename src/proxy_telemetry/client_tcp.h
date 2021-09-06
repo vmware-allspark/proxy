@@ -3,7 +3,7 @@
 #include "client.h"
 #include "envoy/service/accesslog/v3/als.pb.h"
 
-namespace Mesh7::ProxyTelemetry {
+namespace Tsm::ProxyTelemetry {
 
 class TcpTelemetryStreamer
     : public TelemetryStreamer<envoy::service::accesslog::v3::StreamAccessLogsMessage,
@@ -19,4 +19,4 @@ public:
   void send(LogEntry&&);
 };
 
-} // namespace Mesh7::ProxyTelemetry
+} // namespace Tsm::ProxyTelemetry

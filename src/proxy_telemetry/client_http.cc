@@ -1,6 +1,6 @@
 #include "client_http.h"
 
-namespace Mesh7::ProxyTelemetry {
+namespace Tsm::ProxyTelemetry {
 
 void HttpTelemetryStreamer::send(HttpTelemetryStreamer::LogEntry&& log_entry) {
   StreamHttpTelemetryMessage message;
@@ -8,4 +8,4 @@ void HttpTelemetryStreamer::send(HttpTelemetryStreamer::LogEntry&& log_entry) {
   TelemetryStreamer::send(std::move(message));
 }
 
-} // namespace Mesh7::ProxyTelemetry
+} // namespace Tsm::ProxyTelemetry
