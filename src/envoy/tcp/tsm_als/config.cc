@@ -2,7 +2,7 @@
 
 #include "common/protobuf/utility.h"
 
-namespace Mesh7::Filters::Tcp::Telemetry {
+namespace Tsm::Filters::Tcp::Telemetry {
 
 using DurationUtil = Envoy::DurationUtil;
 
@@ -24,4 +24,4 @@ FilterConfig::FilterConfig(Proto::Config const& config,
   });
 }
 
-} // namespace Mesh7::Filters::Tcp::Telemetry
+} // namespace Tsm::Filters::Tcp::Telemetry

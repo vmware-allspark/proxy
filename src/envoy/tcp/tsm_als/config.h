@@ -1,12 +1,12 @@
 #pragma once
 
-#include "src/envoy/tcp/telemetry/config.pb.h"
+#include "src/envoy/tcp/tsm_als/config.pb.h"
 #include "src/proxy_telemetry/client_tcp.h"
 
 #include "envoy/server/filter_config.h"
 #include "envoy/thread_local/thread_local.h"
 
-namespace Mesh7::Filters::Tcp::Telemetry {
+namespace Tsm::Filters::Tcp::Telemetry {
 
 class FilterConfig : public Envoy::Logger::Loggable<Envoy::Logger::Id::config> {
   struct ThreadLocalStreamer : public Envoy::ThreadLocal::ThreadLocalObject {
@@ -35,4 +35,4 @@ private:
   const Envoy::ThreadLocal::SlotPtr tls_slot_;
 };
 
-} // namespace Mesh7::Filters::Tcp::Telemetry
+} // namespace Tsm::Filters::Tcp::Telemetry

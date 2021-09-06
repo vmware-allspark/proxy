@@ -1,5 +1,5 @@
 syntax = "proto3";
-package Mesh7.ProxyTelemetry;
+package Tsm.ProxyTelemetry;
 
 import "envoy/config/core/v3/base.proto";
 import "envoy/data/accesslog/v3/accesslog.proto";
