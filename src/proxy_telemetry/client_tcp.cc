@@ -1,6 +1,6 @@
 #include "client_tcp.h"
 
-namespace Mesh7::ProxyTelemetry {
+namespace Tsm::ProxyTelemetry {
 
 void TcpTelemetryStreamer::send(TcpTelemetryStreamer::LogEntry&& log_entry) {
   envoy::service::accesslog::v3::StreamAccessLogsMessage message;
@@ -8,4 +8,4 @@ void TcpTelemetryStreamer::send(TcpTelemetryStreamer::LogEntry&& log_entry) {
   TelemetryStreamer::send(std::move(message));
 }
 
-} // namespace Mesh7::ProxyTelemetry
+} // namespace Tsm::ProxyTelemetry

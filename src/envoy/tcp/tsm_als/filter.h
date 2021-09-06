@@ -8,7 +8,7 @@
 
 #include <memory>
 
-namespace Mesh7::Filters::Tcp::Telemetry {
+namespace Tsm::Filters::Tcp::Telemetry {
 
 enum class ConnectionEvent { OPEN = 0, CONTINUE = 1, CLOSE = 2 };
 
@@ -17,7 +17,7 @@ class FilterConfig;
 class NetworkFilter : public Envoy::Network::ReadFilter,
                       public Envoy::Logger::Loggable<Envoy::Logger::Id::filter> {
 public:
-  static constexpr char NAME[] = "m7.filters.network.telemetry";
+  static constexpr char NAME[] = "tsm_als.filters.network.telemetry";
 
   explicit NetworkFilter(std::shared_ptr<const FilterConfig> config);
   ~NetworkFilter() override;
@@ -39,4 +39,4 @@ private:
   Envoy::Event::TimerPtr timer_;
 };
 
-} // namespace Mesh7::Filters::Tcp::Telemetry
+} // namespace Tsm::Filters::Tcp::Telemetry

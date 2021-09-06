@@ -1,12 +1,12 @@
 #include "filter.h"
 #include "config.h"
 
-#include "src/envoy/tcp/telemetry/config.pb.validate.h"
+#include "src/envoy/tcp/tsm_als/config.pb.validate.h"
 
 #include "extensions/filters/network/common/factory_base.h"
 #include "envoy/registry/registry.h"
 
-namespace Mesh7::Filters::Tcp::Telemetry {
+namespace Tsm::Filters::Tcp::Telemetry {
 
 class FilterFactory : public Envoy::Extensions::NetworkFilters::Common::FactoryBase<Proto::Config> {
 public:
@@ -29,4 +29,4 @@ Envoy::Network::FilterFactoryCb FilterFactory::createFilterFactoryFromProtoTyped
 /// Static registration for this filter. @see RegisterFactory.
 REGISTER_FACTORY(FilterFactory, Envoy::Server::Configuration::NamedNetworkFilterConfigFactory);
 
-} // namespace Mesh7::Filters::Tcp::Telemetry
+} // namespace Tsm::Filters::Tcp::Telemetry
