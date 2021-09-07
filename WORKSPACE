@@ -25,6 +25,11 @@ load(
     "istioapi_dependencies",
 )
 
+local_repository(
+    name = "envoy_build_config",
+    path = "envoy_build_config",
+)
+
 googletest_repositories()
 
 istioapi_dependencies()
