@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package Tsm.Filters.Tcp.Telemetry.Proto;
+
+import "envoy/config/core/v3/grpc_service.proto";
+import "google/protobuf/duration.proto";
+
+message Config {
+    envoy.config.core.v3.GrpcService grpc_service = 1;
+
+    google.protobuf.Duration continue_log_interval = 2;
+}
