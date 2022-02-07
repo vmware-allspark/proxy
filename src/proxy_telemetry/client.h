@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common/common/logger.h"
-#include "common/grpc/typed_async_client.h"
+#include "source/common/common/logger.h"
+#include "source/common/grpc/typed_async_client.h"
 #include "envoy/local_info/local_info.h"
 #include "envoy/grpc/async_client_manager.h"
 
@@ -20,7 +20,7 @@ public:
       : local_info_(local_info),
         service_method_(
             *Envoy::Protobuf::DescriptorPool::generated_pool()->FindMethodByName(service_method)),
-        client_(factory->create()) {}
+        client_(factory->createUncachedRawAsyncClient()) {}
 
   ~TelemetryStreamer() override = default;
 
