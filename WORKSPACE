@@ -34,10 +34,10 @@ bind(
     actual = "//external:ssl",
 )
 
-local_repository(
-    name = "envoy_build_config",
-    path = "envoy_build_config",
-)
+#local_repository(
+#    name = "envoy_build_config",
+#    path = "envoy_build_config",
+#)
 
 # 1. Determine SHA256 `wget https://github.com/envoyproxy/envoy/archive/$COMMIT.tar.gz && sha256sum $COMMIT.tar.gz`
 # 2. Update .bazelversion, envoy.bazelrc and .bazelrc if needed.

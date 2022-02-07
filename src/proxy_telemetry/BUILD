@@ -9,8 +9,8 @@ envoy_cc_library(
     ],
     repository = "@envoy",
     deps = [
-        "@envoy//include/envoy/local_info:local_info_interface",
-        "@envoy//include/envoy/grpc:async_client_manager_interface",
+        "@envoy//envoy/local_info:local_info_interface",
+        "@envoy//envoy/grpc:async_client_manager_interface",
         "@envoy//source/common/grpc:typed_async_client_lib",
     ]
 )
