@@ -2,7 +2,7 @@
 
 #include "src/proxy_telemetry/client_tcp.h"
 
-#include "common/common/logger.h"
+#include "source/common/common/logger.h"
 #include "envoy/event/timer.h"
 #include "envoy/network/filter.h"
 

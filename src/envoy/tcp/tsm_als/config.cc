@@ -1,6 +1,6 @@
 #include "config.h"
 
-#include "common/protobuf/utility.h"
+#include "source/common/protobuf/utility.h"
 
 namespace Tsm::Filters::Tcp::Telemetry {
 

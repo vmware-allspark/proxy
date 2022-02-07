@@ -3,7 +3,7 @@
 
 #include "src/envoy/tcp/tsm_als/config.pb.validate.h"
 
-#include "extensions/filters/network/common/factory_base.h"
+#include "source/extensions/filters/network/common/factory_base.h"
 #include "envoy/registry/registry.h"
 
 namespace Tsm::Filters::Tcp::Telemetry {
