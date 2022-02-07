@@ -1,9 +1,9 @@
 #include "filter.h"
 #include "config.h"
 
-#include "common/protobuf/utility.h"
+#include "source/common/protobuf/utility.h"
 #include "envoy/network/connection.h"
-#include "extensions/access_loggers/grpc/grpc_access_log_utils.h"
+#include "source/extensions/access_loggers/grpc/grpc_access_log_utils.h"
 
 #include <google/protobuf/util/time_util.h>
 
