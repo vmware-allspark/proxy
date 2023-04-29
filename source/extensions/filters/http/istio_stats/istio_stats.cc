@@ -820,8 +820,8 @@ public:
   // AccessLog::Instance
   void log(const Http::RequestHeaderMap* request_headers,
            const Http::ResponseHeaderMap* response_headers,
-           const Http::ResponseTrailerMap* response_trailers,
-           const StreamInfo::StreamInfo& info) override {
+           const Http::ResponseTrailerMap* response_trailers, const StreamInfo::StreamInfo& info,
+           AccessLog::AccessLogType) override {
     reportHelper(true);
     if (is_grpc_) {
       tags_.push_back({context_.request_protocol_, context_.grpc_});
@@ -1029,6 +1029,11 @@ private:
                 const auto& host_it = service.find("host");
                 if (host_it != service.end()) {
                   service_host = host_it->second.string_value();
+                }
+                const auto& name_it = service.find("name");
+                if (name_it != service.end()) {
+                  service_host_name = name_it->second.string_value();
+                } else {
                   service_host_name = service_host.substr(0, service_host.find_first_of('.'));
                 }
               }
