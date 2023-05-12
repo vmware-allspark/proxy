@@ -34,10 +34,10 @@ bind(
 # 1. Determine SHA256 `wget https://github.com/envoyproxy/envoy/archive/$COMMIT.tar.gz && sha256sum $COMMIT.tar.gz`
 # 2. Update .bazelversion, envoy.bazelrc and .bazelrc if needed.
 #
-# Commit date: 2023-05-08
-ENVOY_SHA = "c2ccab265b13a7675af6a78587fe6f397c56ea6b"
+# Commit date: 2023-05-11
+ENVOY_SHA = "ceda88084402e4ca39b8168ba891b550a06e22a0"
 
-ENVOY_SHA256 = "7f23b7300650cac0b715e40c4a7dae23bf47364404bc422662d06a62a72b2e65"
+ENVOY_SHA256 = "7d1d122e685788fce13307075f20cadd419aff5773b1d82509f8f32a25482498"
 
 ENVOY_ORG = "envoyproxy"
 
@@ -72,7 +72,7 @@ envoy_dependencies()
 
 load("@envoy//bazel:repositories_extra.bzl", "envoy_dependencies_extra")
 
-envoy_dependencies_extra()
+envoy_dependencies_extra(ignore_root_user_error = True)
 
 load("@envoy//bazel:python_dependencies.bzl", "envoy_python_dependencies")
 
