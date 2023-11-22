@@ -20,6 +20,7 @@ load(
     "envoy_cc_library",
     "envoy_cc_test",
     "envoy_extension_package",
+    "envoy_proto_library",
 )
 
 envoy_extension_package()
@@ -32,7 +33,7 @@ envoy_cc_library(
     hdrs = ["alpn_filter.h"],
     repository = "@envoy",
     deps = [
-        "//external:alpn_filter_config_cc_proto",
+        ":config_cc_proto",
         "@envoy//envoy/http:filter_interface",
         "@envoy//source/common/network:application_protocol_lib",
         "@envoy//source/extensions/filters/http/common:pass_through_filter_lib",
@@ -46,7 +47,6 @@ envoy_cc_library(
     repository = "@envoy",
     deps = [
         ":alpn_filter",
-        "//source/extensions/common:filter_names_lib",
         "@envoy//envoy/registry",
         "@envoy//source/exe:envoy_common_lib",
         "@envoy//source/extensions/filters/http/common:factory_base_lib",
@@ -82,4 +82,9 @@ envoy_cc_test(
         "@envoy//test/mocks/server:server_mocks",
         "@envoy//test/test_common:utility_lib",
     ],
+)
+
+envoy_proto_library(
+    name = "config",
+    srcs = ["config.proto"],
 )
