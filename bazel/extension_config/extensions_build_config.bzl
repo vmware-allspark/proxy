@@ -35,6 +35,8 @@ ENVOY_EXTENSIONS = {
     "envoy.compression.gzip.decompressor":              "//source/extensions/compression/gzip/decompressor:config",
     "envoy.compression.brotli.compressor":              "//source/extensions/compression/brotli/compressor:config",
     "envoy.compression.brotli.decompressor":            "//source/extensions/compression/brotli/decompressor:config",
+    "envoy.compression.zstd.compressor":                "//source/extensions/compression/zstd/compressor:config",
+    "envoy.compression.zstd.decompressor":              "//source/extensions/compression/zstd/decompressor:config",
 
     #
     # gRPC Credentials Plugins
@@ -233,6 +235,7 @@ ENVOY_EXTENSIONS = {
     #
 
     "envoy.tracers.opentelemetry.resource_detectors.environment":   "//source/extensions/tracers/opentelemetry/resource_detectors/environment:config",
+    "envoy.tracers.opentelemetry.resource_detectors.dynatrace":     "//source/extensions/tracers/opentelemetry/resource_detectors/dynatrace:config",
 
     #
     # OpenTelemetry tracer samplers
