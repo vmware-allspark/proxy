@@ -16,11 +16,10 @@
 
 #include <atomic>
 
+#include "envoy/router/string_accessor.h"
 #include "envoy/registry/registry.h"
 #include "envoy/server/factory_context.h"
 #include "envoy/singleton/manager.h"
-#include "eval/public/builtin_func_registrar.h"
-#include "eval/public/cel_expr_builder_factory.h"
 #include "extensions/common/metadata_object.h"
 #include "parser/parser.h"
 #include "source/common/grpc/common.h"
@@ -28,12 +27,23 @@
 #include "source/common/http/header_utility.h"
 #include "source/common/network/utility.h"
 #include "source/common/stream_info/utility.h"
-#include "source/extensions/common/filter_objects.h"
 #include "source/extensions/filters/common/expr/cel_state.h"
 #include "source/extensions/filters/common/expr/context.h"
 #include "source/extensions/filters/common/expr/evaluator.h"
 #include "source/extensions/filters/http/common/pass_through_filter.h"
 #include "source/extensions/filters/http/grpc_stats/grpc_stats_filter.h"
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
+#include "eval/public/builtin_func_registrar.h"
+#include "eval/public/cel_expr_builder_factory.h"
+
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 namespace Envoy {
 namespace Extensions {
@@ -1046,10 +1056,10 @@ private:
     switch (config_->reporter()) {
     case Reporter::ServerSidecar:
     case Reporter::ServerGateway: {
-      auto peer_principal = info.filterState().getDataReadOnly<Router::StringAccessor>(
-          Extensions::Common::PeerPrincipalKey);
-      auto local_principal = info.filterState().getDataReadOnly<Router::StringAccessor>(
-          Extensions::Common::LocalPrincipalKey);
+      auto peer_principal =
+          info.filterState().getDataReadOnly<Router::StringAccessor>("io.istio.peer_principal");
+      auto local_principal =
+          info.filterState().getDataReadOnly<Router::StringAccessor>("io.istio.local_principal");
       peer_san = peer_principal ? peer_principal->asString() : "";
       local_san = local_principal ? local_principal->asString() : "";
 
