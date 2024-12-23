@@ -1,10 +1,12 @@
 module istio.io/proxy
 
-go 1.22.0
+go 1.22.8
+
+toolchain go1.23.4
 
 require (
 	github.com/cncf/xds/go v0.0.0-20240423153145-555b57ec207b
-	github.com/envoyproxy/go-control-plane v0.13.2-0.20241109100107-f5bf65d80d81
+	github.com/envoyproxy/go-control-plane v0.13.2-0.20241219211543-3d323014884b
 	github.com/golang/protobuf v1.5.4
 	github.com/google/go-cmp v0.6.0
 	github.com/prometheus/client_model v0.6.0
@@ -20,7 +22,6 @@ require (
 
 require (
 	cel.dev/expr v0.15.0 // indirect
-	github.com/census-instrumentation/opencensus-proto v0.4.1 // indirect
 	github.com/envoyproxy/protoc-gen-validate v1.1.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.19.0 // indirect
 	github.com/kr/text v0.2.0 // indirect
