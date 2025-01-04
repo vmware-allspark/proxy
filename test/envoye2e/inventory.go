@@ -34,11 +34,13 @@ func init() {
 		"TestPassthroughCONNECT/h2",
 		"TestHTTPExchange",
 		"TestNativeHTTPExchange",
+		"TestHTTPExchangeAdditionalLabels",
 		"TestStats403Failure/#00",
 		"TestStatsECDS/#00",
 		"TestStatsEndpointLabels/#00",
 		"TestStatsServerWaypointProxy",
 		"TestStatsServerWaypointProxyCONNECT",
+		"TestTCPStatsServerWaypointProxyCONNECT",
 		"TestStatsGrpc/#00",
 		"TestStatsGrpcStream/#00",
 		"TestStatsParallel/Default",
@@ -55,5 +57,7 @@ func init() {
 		"TestTCPMetadataExchangeWithConnectionTermination",
 		"TestTCPMetadataNotFoundReporting",
 		"TestStatsDestinationServiceNamespacePrecedence",
+		"TestAdditionalLabels",
+		"TestTCPMXAdditionalLabels",
 	}...)
 }
